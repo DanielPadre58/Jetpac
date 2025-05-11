@@ -1,0 +1,57 @@
+# estrutura de um nível
+# linhas começadas por # são comentários
+# começa-se por definir as dimensões do mundo e o desenho do fundo e quantas frames tem a animação
+# e o delay da animação (se o fundo não for animado estes valores devem ser 0) 
+mundo = 1000, 500, background/planeta2.jpg, 0, 0
+
+# cada nível começa com a definição de onde está a nave
+# e em quantas partes está partida
+# se nave = 1 quer dizer que não está partida 
+nave = 5
+
+# consoante as partes em que está partida
+# descreve-se as posições desta na sintaxe
+# x, y, desenho, num Frames (0 se não for animada) e delay entre frames 
+370, 484, ship/nave_2_1.gif, 0, 0
+100, 230, ship/nave_2_2.gif, 0, 0
+120, 484, ship/nave_2_3.gif, 0, 0
+590, 70, ship/nave_2_4.gif, 0, 0
+850, 280, ship/nave_2_5.gif, 0, 0
+
+# depois define-se a posição, desenho do astronauta e altura do disparo
+astronauta = 750, 256, astro/astro2.gif, 26
+
+# depois a informação sobre o mundo,
+
+# nomeadamente as plataformas
+# primeiro o número destas
+# não esquecer que o chão também é uma plataforma
+plataformas = 4
+
+# depois vem a definição de cada plataforma
+# posição x, y, desenho (e num. frames e delay) 
+# para o comprimento e a altura usam-se as dimensões do desenho
+0, 534, plat/plataforma_2_chao.png, 0, 0
+538, 101, plat/plataforma_2_1.png, 0, 0
+80, 284, plat/plataforma_2_1.png, 0, 0
+706, 316, plat/plataforma_2_1.png, 0, 0
+
+# Definição dos inimigos
+# número máximo de inimigos em cena,
+# velocidade, pontuação, tipo de deslocamento, imagem
+inimigos = 12, 5, 8, linear, enemy/meteoro_3.png, 6, 4
+
+# definicao do fuel: número de abastecimentos, tempo mínimo sem fuel, tempo máximo sem fuel, imagem
+fuel = 5, 1200, 6000, fuel/fuel_2.png, 0, 0
+
+# Definição dos tesouros
+# número de tipos de tesouros que existem neste nível,
+# tempo mínimo e máximo entre cada tesouro (em milisegundos)
+tesouros = 4, 2000,  7000
+
+# Definição de cada tipo de tesouro 
+# probabilidade (0%-100%), duração máxima do tesouro (em ciclos), pontuação e desenho
+15, 10000, 50, treasure/ouro_2.png, 2, 5
+15, 10000, 50, treasure/safira_2.png, 3, 6
+15, 8000, 200, treasure/diamante_2.png, 7, 3
+55, 8000, 100, treasure/rubi_2.png, 3, 3
