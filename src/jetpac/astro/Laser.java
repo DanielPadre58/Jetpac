@@ -16,9 +16,9 @@ public class Laser extends WorldElementDefault {
 	private int range; // alcance do laser
 
 	// estilo de linha do laser
-	private static Stroke laserStyle = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-	private Color color; // cor do laser
-	private Line2D.Double laser; // linha do laser no écran
+	private static final Stroke laserStyle = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+	private final Color color; // cor do laser
+	private final Line2D.Double laser; // linha do laser no écran
 
 	private boolean dead = false; // se o laser está desativo
 

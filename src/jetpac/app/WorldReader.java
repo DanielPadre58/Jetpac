@@ -149,7 +149,7 @@ public class WorldReader {
 			y = Integer.parseInt(info[1]);
 			img = lerImagem(info, 2, new Point(x, y));
 			SpaceshipPart parte = new SpaceshipPart(i, new Point(x, y), img);
-			world.addSpaceshipPart(parte);
+			world.adicionarElementoPegavel(parte);
 		}
 	}
 

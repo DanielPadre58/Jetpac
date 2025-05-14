@@ -1,5 +1,5 @@
 package jetpac.drag;
 
-public enum State {
+public enum Estado {
 	FALLING, REST, DRAGGED, DROPING, DELIVERED
 }

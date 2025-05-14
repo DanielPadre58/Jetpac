@@ -3,6 +3,7 @@ package jetpac.generator;
 import java.awt.Point;
 import java.util.concurrent.ThreadLocalRandom;
 
+import jetpac.mundo.WorldElement;
 import prof.jogos2D.image.ComponenteVisual;
 import prof.jogos2D.util.ReguladorVelocidade;
 import jetpac.drag.Fuel;
@@ -15,15 +16,9 @@ import jetpac.mundo.Mundo;
  * tempo máximo para esse tempo.
  * 
  */
-public class FuelGenerator {
+public class FuelGenerator extends GeneratorDefault{
 
-	private int nFuels; // número de fuels já criados
-	private int maxFuel; // máximo de fuels a criar
 	private ComponenteVisual img; // imagem de cada fuel
-	private Mundo world; // mundo ao qual se adiciona fuel
-	private int minTime; // tempo mínimo entre criação de fuels
-	private int range; // tempo durante o qual podem ser criados fuels
-	private long proxFuel; // temporizador de criação do próximo fuel
 	private boolean foiEntregue = true;
 
 	/**
@@ -36,65 +31,34 @@ public class FuelGenerator {
 	 * @param w       mundo onde os fuels irão ser colocados
 	 */
 	public FuelGenerator(int maxFuel, int min, int max, ComponenteVisual img, Mundo w) {
-		this.nFuels = 0;
-		this.maxFuel = maxFuel;
+		super(maxFuel, min, max - min, w);
 		this.img = img;
-		world = w;
-		minTime = min;
-		range = max - min;
-		proxFuel = nextFuelTime();
 	}
 
 	/**
 	 * método qua cria os fuels quando for caso disso
 	 */
+	@Override
 	public void update() {
 		// só pode criar se não houver fuel no mundo e se a nave estiver completa
-		if (nFuels >= maxFuel || !world.getMainSpaceship().isComplete() || !foiEntregue)
+		if (nElementos >= maxElementos || !mundo.getMainSpaceship().isComplete() || !foiEntregue)
 			return;
 
 		// quando o temporizador chega a zero é altura de criar fuel
-		if (proxFuel <= ReguladorVelocidade.tempoRelativo()) {
+		if (nextCreationTime <= ReguladorVelocidade.tempoRelativo()) {
 			// gerar aleatoriamente a coordenada x onde aparece o fuel
 			int x = img.getComprimento()
-					+ ThreadLocalRandom.current().nextInt(world.getWidth() - 2 * img.getComprimento());
+					+ ThreadLocalRandom.current().nextInt(mundo.getWidth() - 2 * img.getComprimento());
 
 			// criar e adicionar o fuel ao mundo
 			Fuel f = new Fuel(new Point(x, 0), img);
-			world.addFuel(f);
+			mundo.adicionarElementoPegavel(f);
 			foiEntregue = false;
 
 			// incrementar o número de fuels já criados e reiniciar o temporizador
-			nFuels++;
-			proxFuel = nextFuelTime();
+			nElementos++;
+			nextCreationTime = nextCreationTime();
 		}
-	}
-
-	/**
-	 * indica se ainda tem mais fuel para criar
-	 * 
-	 * @return true se ainda vai criar mais fuel
-	 */
-	public boolean hasMoreFuel() {
-		return nFuels < maxFuel;
-	}
-
-	/**
-	 * estabelece o tempo de criação do próximo fuel
-	 * 
-	 * @return o número de ciclos até crir o próximo
-	 */
-	private long nextFuelTime() {
-		return minTime + ReguladorVelocidade.tempoRelativo() + ThreadLocalRandom.current().nextInt(range);
-	}
-
-	/**
-	 * retorna o número máximo de fuels a criar
-	 * 
-	 * @return retorna o número máximo de fuels a criar
-	 */
-	public int getMaxFuel() {
-		return maxFuel;
 	}
 
 	/**
@@ -102,15 +66,16 @@ public class FuelGenerator {
 	 * 
 	 * @return o número de fuels já criados
 	 */
-	public int getNumFuels() {
-		return nFuels + (foiEntregue ? 0 : -1);
+	@Override
+	public int getNElementos () {
+		return super.getNElementos() + (foiEntregue ? 0 : -1);
 	}
 
 	/**
 	 * indica ao gerador que o fuel foi entreguie na nave
 	 */
 	public void fuelDelivered() {
-		proxFuel = nextFuelTime();
+		nextCreationTime = nextCreationTime();
 		foiEntregue = true;
 	}
 }

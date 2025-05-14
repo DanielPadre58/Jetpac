@@ -25,10 +25,8 @@ public class Mundo {
 	private ArrayList<Laser> lasers = new ArrayList<Laser>();
 	private ArrayList<Inimigo> enemies = new ArrayList<Inimigo>();
 
-	// TODO usar apenas uma lista
-	private ArrayList<Fuel> fuels = new ArrayList<Fuel>();
-	private ArrayList<Tesouro> tesouros = new ArrayList<Tesouro>();
-	private ArrayList<SpaceshipPart> partes = new ArrayList<SpaceshipPart>();
+	// TODO DONE usar apenas uma lista
+	private ArrayList<DraggableElement> elementosPegaveis = new ArrayList<>();
 
 	// os vários geradores de elementos
 	private TreasureGenerator treasureGen;
@@ -108,13 +106,9 @@ public class Mundo {
 		for (Inimigo e : enemies)
 			e.draw(g);
 
-		// TODO tentar usar apenas um for
-		for (Fuel f : fuels)
-			f.draw(g);
-		for (Tesouro t : tesouros)
-			t.draw(g);
-		for (SpaceshipPart p : partes)
-			p.draw(g);
+		// TODO DONE tentar usar apenas um for
+		for (DraggableElement draggable : elementosPegaveis)
+			draggable.draw(g);
 
 		ship.draw(g);
 	}
@@ -165,16 +159,12 @@ public class Mundo {
 		for (Plataforma f : platforms)
 			f.update();
 
-		for (int i = 0; i < enemies.size(); i++)
-			enemies.get(i).update();
+		for(Inimigo inimigo : enemies)
+			inimigo.update();
 
-		// TODO tentar usar apenas um for
-		for (Fuel f : fuels)
-			f.update();
-		for (Tesouro t : tesouros)
-			t.update();
-		for (SpaceshipPart p : partes)
-			p.update();
+		// TODO DONE tentar usar apenas um for
+		for (DraggableElement draggable : elementosPegaveis)
+			draggable.update();
 
 		// retirar os disparos que já não estão ativos
 		for (int i = lasers.size() - 1; i >= 0; i--) {
@@ -189,38 +179,18 @@ public class Mundo {
 		}
 
 		// retirar os arrastáveis que já não estão ativos
-		// TODO tentar usar apenas um for
-		for (int i = fuels.size() - 1; i >= 0; i--) {
-			if (!fuels.get(i).isActive())
-				fuels.remove(i);
-		}
-		for (int i = tesouros.size() - 1; i >= 0; i--) {
-			if (!tesouros.get(i).isActive())
-				tesouros.remove(i);
-		}
-		for (int i = partes.size() - 1; i >= 0; i--) {
-			if (!partes.get(i).isActive())
-				partes.remove(i);
-		}
-
+		// TODO DONE tentar usar apenas um for
+		for(DraggableElement draggable : elementosPegaveis)
+			if(!draggable.isActive())
+				elementosPegaveis.remove(draggable);
 	}
 
 	private void prepararCenario() {
 		// não pode começar enquanto houverem coisas a cair
 		boolean start = true;
-		// TODO tentar usar apenas um for
-		for (Fuel f : fuels)
-			if (f.isFalling()) {
-				start = false;
-				break;
-			}
-		for (Tesouro t : tesouros)
-			if (t.isFalling()) {
-				start = false;
-				break;
-			}
-		for (SpaceshipPart p : partes)
-			if (p.isFalling()) {
+		// TODO DONE tentar usar apenas um for
+		for (DraggableElement draggable : elementosPegaveis)
+			if (draggable.isFalling()) {
 				start = false;
 				break;
 			}
@@ -232,13 +202,9 @@ public class Mundo {
 			start();
 
 		ship.update();
-		// TODO tentar usar apenas um for
-		for (Fuel f : fuels)
-			f.update();
-		for (Tesouro t : tesouros)
-			t.update();
-		for (SpaceshipPart p : partes)
-			p.update();
+		// TODO DONE tentar usar apenas um for
+		for (DraggableElement draggable : elementosPegaveis)
+			draggable.update();
 	}
 
 	private int subirNave() {
@@ -296,30 +262,36 @@ public class Mundo {
 		astronauta.setWorld(this);
 	}
 
-	public void addFuel(Fuel f) {
-		fuels.add(f);
-		f.setWorld(this);
+	public void adicionarElementoPegavel(DraggableElement d) {
+		elementosPegaveis.add(d);
+		d.setWorld(this);
 	}
 
+
 	public List<Fuel> getFuel() {
+		List<Fuel> fuels = new ArrayList<>();
+		for (DraggableElement d : elementosPegaveis)
+			if (d instanceof Fuel)
+				fuels.add((Fuel) d);
+
 		return Collections.unmodifiableList(fuels);
 	}
 
-	public void addTesouro(Tesouro t) {
-		tesouros.add(t);
-		t.setWorld(this);
-	}
-
 	public List<Tesouro> getTesouros() {
+		List<Tesouro> tesouros = new ArrayList<>();
+		for (DraggableElement d : elementosPegaveis)
+			if (d instanceof Tesouro)
+				tesouros.add((Tesouro) d);
+
 		return Collections.unmodifiableList(tesouros);
 	}
 
-	public void addSpaceshipPart(SpaceshipPart s) {
-		partes.add(s);
-		s.setWorld(this);
-	}
-
 	public List<SpaceshipPart> getSpaceshipParts() {
+		List<SpaceshipPart> partes = new ArrayList<>();
+		for (DraggableElement d : elementosPegaveis)
+			if (d instanceof SpaceshipPart)
+				partes.add((SpaceshipPart) d);
+
 		return Collections.unmodifiableList(partes);
 	}
 
@@ -417,7 +389,7 @@ public class Mundo {
 	 * @return a percentagem de fuel
 	 */
 	public int getFuelPercentage() {
-		return fuelGen.getNumFuels() * 100 / fuelGen.getMaxFuel();
+		return fuelGen.getNElementos() * 100 / fuelGen.getMaxElementos();
 	}
 
 	/**

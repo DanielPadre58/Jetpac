@@ -18,11 +18,7 @@ public class Astronauta extends WorldElementDefault {
 	private static final int VELOCIDADE_VOO = 6;
 	private static final int VELOCIDADE_ANDAR = 4;
 
-    public static enum Direcao{
-        LEFT, RIGHT
-    }
-
-	private Point initialPos; // posição inicial do astronauta
+	private final Point initialPos; // posição inicial do astronauta
 	private Direcao dir; // direção atual
 	private boolean jetPacOn = false; // tem o jetpac ligado?
 	private boolean rising = false; // está a subir?
@@ -33,10 +29,10 @@ public class Astronauta extends WorldElementDefault {
 	private final int shootSpeed = 4; // velocidade de disparo
 	private int nextShot = 0; // temporizador de disparo
 	private int rangeIdx = 0; // indíce do alcance do laser
-	private int offsetDispY; // ponta da arma relativa à imagem do astronauta
+	private final int offsetDispY; // ponta da arma relativa à imagem do astronauta
 
 	// alcances do laser para dar um "efeito especial"
-	private int ranges[] = { 150, 300, 450, 600, 650, 700 };
+	private final int[] ranges = { 150, 300, 450, 600, 650, 700 };
 
 	// indicação do que está a carregar
 	// TODO DONE serão precisas tantas variáveis?

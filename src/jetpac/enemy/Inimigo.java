@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.ThreadLocalRandom;
 
+import jetpac.astro.Direcao;
 import prof.jogos2D.image.ComponenteMultiAnimado;
 import prof.jogos2D.util.ReguladorVelocidade;
 import prof.jogos2D.util.Vector2D;
@@ -51,13 +52,13 @@ public class Inimigo {
 	 * @param dir   direção en que está virado
 	 * @param img   imagems
 	 */
-	public Inimigo(int tipo, Point p, int vel, int score, int dir, ComponenteMultiAnimado img) {
+	public Inimigo(int tipo, Point p, int vel, int score, Direcao dir, ComponenteMultiAnimado img) {
 		this.tipo = tipo;
 
 		imagem = (ComponenteMultiAnimado) img.clone();
 
 		// ver qual animação a usar
-		if (dir == Astronauta.LEFT) {
+		if (dir == Direcao.LEFT) {
 			imagem.setAnim(ANIM_LEFT);
 			velX = -vel;
 		} else {

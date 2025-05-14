@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import jetpac.astro.Astronauta;
+import jetpac.astro.Direcao;
 import jetpac.mundo.Mundo;
 import prof.jogos2D.util.*;
 
@@ -101,7 +102,7 @@ public class Jetpac extends JFrame {
 	 * Lê as informações do nível no respectivo ficheiro.
 	 * O ficheiro dos níveis está no diretório levels e tem a terminação txt.
 	 *
-	 * @param nivel o nível a ler
+	 * @param level o nível a ler
 	 * @return o mundo representado neste nível
 	 */
 	private Mundo readLevel(int level) {
@@ -172,10 +173,10 @@ public class Jetpac extends JFrame {
 		astro.setShooting(teclado.estaPremida(KeyEvent.VK_A));
 		// a andar? se sim para que lado?
 		if (teclado.estaPremida(KeyEvent.VK_N)) {
-			astro.setDirection(Astronauta.LEFT);
+			astro.setDirection(Direcao.LEFT);
 			astro.setWalking(true);
 		} else if (teclado.estaPremida(KeyEvent.VK_M)) {
-			astro.setDirection(Astronauta.RIGHT);
+			astro.setDirection(Direcao.RIGHT);
 			astro.setWalking(true);
 		} else
 			astro.setWalking(false);

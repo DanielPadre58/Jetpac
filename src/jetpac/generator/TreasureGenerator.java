@@ -13,78 +13,53 @@ import java.util.concurrent.ThreadLocalRandom;
  * na nave e a criação do próximo é aleatório, mas existe um tempo mínimo e um
  * tempo máximo para esse tempo.
  */
-public class TreasureGenerator {
+public class TreasureGenerator extends GeneratorDefault {
 
-	private int minTime; // tempo mínimo entre criação de tesouros
-	private int range; // tempo durante o qual podem ser criados tesouros
-	private TreasureInfo[] tInfo; // informação sobre os tesouros que podem ser criados
-	private Mundo world; // mundo onde se adicionam os tesouros
-	private long proxTreasureCreation; // temporizador de criação de tesouros
-	private int maxTreasures;
-	private int currentTreasures = 0;
+    private TreasureInfo[] tInfo; // informação sobre os tesouros que podem ser criados
 
-	/**
-	 * cria o gerador de tesouros creates the treasure generator
-	 * 
-	 * @param min   tempo mínimo entre criação de tesouros
-	 * @param max   tempo máximo entre criação de tesouros
-	 * @param tInfo informação sobre os tesouros a serem criados
-	 * @param w     mundo ao qual os tesouros serão adicionados
-	 */
-	public TreasureGenerator(int maxTreasures, int min, int max, TreasureInfo[] tInfo, Mundo w) {
-		world = w;
-		this.tInfo = tInfo;
-		minTime = min;
-		range = max - min;
-		proxTreasureCreation = nextCreationTime();
-		this.maxTreasures = maxTreasures;
-	}
+    /**
+     * cria o gerador de tesouros creates the treasure generator
+     *
+     * @param min   tempo mínimo entre criação de tesouros
+     * @param max   tempo máximo entre criação de tesouros
+     * @param tInfo informação sobre os tesouros a serem criados
+     * @param w     mundo ao qual os tesouros serão adicionados
+     */
+    public TreasureGenerator(int maxTreasures, int min, int max, TreasureInfo[] tInfo, Mundo w) {
+        super(maxTreasures, min, max - min, w);
+        this.tInfo = tInfo;
+    }
 
-	/**
-	 * método que trata da criação dos tesouros
-	 */
-	public void update() {
-		// se o mundo tem tesouro não se pode criar
-		if (currentTreasures >= maxTreasures)
-			return;
+    /**
+     * método que trata da criação dos tesouros
+     */
+    @Override
+    public void update() {
+        super.update();
 
-		// se o temporizador já 0 chegou a altura de criar
-		if (proxTreasureCreation <= ReguladorVelocidade.tempoRelativo()) {
-			// escolher aleatoriamente qual o tesouro a criar
-			int prob = ThreadLocalRandom.current().nextInt(100);
+        // escolher aleatoriamente qual o tesouro a criar
+        int prob = ThreadLocalRandom.current().nextInt(100);
 
-			// ver qual dos tesouros tem a probabilidade escolhida
-			int total = 0;
-			Tesouro t = null;
-			for (int i = 0; i < tInfo.length; i++) {
-				total += tInfo[i].getProbability();
-				if (prob < total) {
-					// escolher a coordenada x e criar o tesouro
-					int x = tInfo[i].getImg().getComprimento()
-							+ ThreadLocalRandom.current()
-									.nextInt(world.getWidth() - 2 * tInfo[i].getImg().getComprimento());
-					t = tInfo[i].createTresure(new Point(x, 0));
+        // ver qual dos tesouros tem a probabilidade escolhida
+        int total = 0;
+        Tesouro t = null;
+        for (int i = 0; i < tInfo.length; i++) {
+            total += tInfo[i].getProbability();
+            if (prob < total) {
+                // escolher a coordenada x e criar o tesouro
+                int x = tInfo[i].getImg().getComprimento()
+                        + ThreadLocalRandom.current()
+                        .nextInt(mundo.getWidth() - 2 * tInfo[i].getImg().getComprimento());
+                t = tInfo[i].createTresure(new Point(x, 0));
 
-					break;
-				}
-			}
-			// adicionar o tesouro ao mundo e reiniciar o temporizador
-			currentTreasures++;
-			world.addTesouro(t);
-			proxTreasureCreation = nextCreationTime();
-		}
-	}
+                break;
+            }
+        }
 
-	/**
-	 * estabelece o tempo de criação do próximo tesouro
-	 * 
-	 * @return o próximo tempo de criação
-	 */
-	private long nextCreationTime() {
-		return ReguladorVelocidade.tempoRelativo() + minTime + ThreadLocalRandom.current().nextInt(range);
-	}
+        mundo.adicionarElementoPegavel(t);
+    }
 
-	public void treasureRemoved() {
-		currentTreasures--;
-	}
+    public void treasureRemoved() {
+        nElementos--;
+    }
 }

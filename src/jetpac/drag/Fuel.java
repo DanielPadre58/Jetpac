@@ -7,7 +7,7 @@ import prof.jogos2D.image.ComponenteVisual;
 /**
  * classe que representa o combustível a ser carregado para a nave
  */
-public class Fuel extends DraggableElement{
+public class Fuel extends DraggableElementDefault {
 
 	public Fuel(Point p, ComponenteVisual imagem) {
 		this.imagem = imagem;

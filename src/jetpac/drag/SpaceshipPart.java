@@ -1,20 +1,14 @@
 package jetpac.drag;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 
-import jetpac.astro.Astronauta;
-import jetpac.astro.Plataforma;
-import jetpac.mundo.Mundo;
 import prof.jogos2D.image.ComponenteVisual;
-import prof.jogos2D.util.Vector2D;
 
 /**
  * Classe que representa as partes da nave. Cada parte tem uma ordem em que deve
  * ser colocada na nave
  */
-public class SpaceshipPart extends DraggableElement{
+public class SpaceshipPart extends DraggableElementDefault {
 
 	private int partIdx; // ordem da parte da nave
 
