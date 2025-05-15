@@ -13,6 +13,8 @@ import jetpac.astro.Astronauta;
 import jetpac.astro.Plataforma;
 import jetpac.mundo.Mundo;
 
+import static jetpac.enemy.Inimigo.TipoInimigo.SALTADOR;
+
 /**
  * classe que representa um inimigo
  */
@@ -31,12 +33,11 @@ public class Inimigo {
 	private ComponenteMultiAnimado imagem;
 
 	// constantes para identificar o tipo de inimigo
-	public static final int LINEAR = 0;
-	public static final int RICOCHETE = 1;
-	public static final int PERSEGUIDOR = 2;
-	public static final int SALTADOR = 3;
+	public static enum	TipoInimigo {
+		LINEAR, RICOCHETE, PERSEGUIDOR, SALTADOR
+	}
 
-	private int tipo;
+	private final TipoInimigo tipo;
 
 	private long changeCycle; // se for um perseguidor isto indica quanto deve "atacar" o astronauta
 
@@ -52,7 +53,7 @@ public class Inimigo {
 	 * @param dir   direção en que está virado
 	 * @param img   imagems
 	 */
-	public Inimigo(int tipo, Point p, int vel, int score, Direcao dir, ComponenteMultiAnimado img) {
+	public Inimigo(TipoInimigo tipo, Point p, int vel, int score, Direcao dir, ComponenteMultiAnimado img) {
 		this.tipo = tipo;
 
 		imagem = (ComponenteMultiAnimado) img.clone();
@@ -68,14 +69,14 @@ public class Inimigo {
 		imagem.setPosicao(p);
 		this.score = score;
 
-		if (tipo == LINEAR || tipo == RICOCHETE) {
+		if (tipo == TipoInimigo.LINEAR || tipo == TipoInimigo.RICOCHETE) {
 			// a velocidade em Y é aleatória
 			velY = vel / 2 - ThreadLocalRandom.current().nextInt(vel);
-		} else if (tipo == PERSEGUIDOR) {
+		} else if (tipo == TipoInimigo.PERSEGUIDOR) {
 			// a velocidade em Y é aleatória
 			velY = vel / 2 - ThreadLocalRandom.current().nextInt(vel);
 			changeCycle = proximaMudanca();
-		} else if (tipo == SALTADOR) {
+		} else if (tipo == TipoInimigo.SALTADOR) {
 			velX = velX / 2;
 			amplitude = ThreadLocalRandom.current().nextInt(6, 9);
 			fase = ThreadLocalRandom.current().nextInt(180);
@@ -201,9 +202,9 @@ public class Inimigo {
 	}
 
 	protected void desloca() {
-		if (tipo == LINEAR || tipo == RICOCHETE)
+		if (tipo == TipoInimigo.LINEAR || tipo == TipoInimigo.RICOCHETE)
 			move(velX, velY);
-		else if (tipo == PERSEGUIDOR) {
+		else if (tipo == TipoInimigo.PERSEGUIDOR) {
 			if (ReguladorVelocidade.tempoRelativo() < changeCycle) {
 				move(velX, velY);
 				return;
