@@ -35,7 +35,8 @@ public class TreasureGenerator extends GeneratorDefault {
      */
     @Override
     public void update() {
-        super.update();
+        if(!podeCriarElemento())
+            return;
 
         // escolher aleatoriamente qual o tesouro a criar
         int prob = ThreadLocalRandom.current().nextInt(100);
@@ -57,6 +58,7 @@ public class TreasureGenerator extends GeneratorDefault {
         }
 
         mundo.adicionarElementoPegavel(t);
+        super.update();
     }
 
     public void treasureRemoved() {

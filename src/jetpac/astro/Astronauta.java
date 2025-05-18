@@ -221,21 +221,21 @@ public class Astronauta extends WorldElementDefault {
 	 * "mata" o astronauta
 	 */
 	public void die() {
-		if (dead)
-			return;
-
-		// selecionar a animação de morte
-		ComponenteMultiAnimado img = (ComponenteMultiAnimado) getImage();
-		img.setAnim(4);
-		img.setFrameNum(0);
-		img.setCiclico(false);
-		dead = true;
-
-		// avisar o mundo da "morte do artista"
-		getWorld().dying();
-
-		// se está a carregar tem de soltar a carga
-		drop();
+//		if (dead)
+//			return;
+//
+//		// selecionar a animação de morte
+//		ComponenteMultiAnimado img = (ComponenteMultiAnimado) getImage();
+//		img.setAnim(4);
+//		img.setFrameNum(0);
+//		img.setCiclico(false);
+//		dead = true;
+//
+//		// avisar o mundo da "morte do artista"
+//		getWorld().dying();
+//
+//		// se está a carregar tem de soltar a carga
+//		drop();
 	}
 
 	/**

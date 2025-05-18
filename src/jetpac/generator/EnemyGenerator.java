@@ -7,7 +7,6 @@ import jetpac.astro.Direcao;
 import jetpac.enemy.*;
 import jetpac.mundo.Mundo;
 import prof.jogos2D.image.ComponenteMultiAnimado;
-import prof.jogos2D.util.ReguladorVelocidade;
 
 /**
  * Esta classe é responsável por gerar os inimigos de cada nível.
@@ -31,8 +30,7 @@ public class EnemyGenerator extends GeneratorDefault {
      * @param img        imagem do inimigo
      * @param world      mundo onde colocar os inimigos
      */
-    public EnemyGenerator(String type, int maxEnemies, int enemyVel, int enemyScore, ComponenteMultiAnimado img,
-                          Mundo world) {
+    public EnemyGenerator(String type, int maxEnemies, int enemyVel, int enemyScore, ComponenteMultiAnimado img, Mundo world) {
         super(maxEnemies, creationCicle, 0, world);
         this.enemyVel = enemyVel;
         this.img = img;
@@ -45,7 +43,8 @@ public class EnemyGenerator extends GeneratorDefault {
      */
     @Override
     public void update() {
-        super.update();
+        nElementos = mundo.getNumEnemies();
+        if (!podeCriarElemento()) return;
 
         // criar sempre metade dos inimigos mais 1, para não criar todos de uma vez
         for (int i = 0; i <= (maxElementos - nElementos) / 2; i++) {
@@ -65,19 +64,19 @@ public class EnemyGenerator extends GeneratorDefault {
             }
 
             // verificar qual o tipo de inimigo a criar
-            Inimigo e;
-            if (type.equals("linear"))
-                e = new Inimigo(Inimigo.LINEAR, pos, enemyVel, enemyScore, dir, img);
-            else if (type.equals("ricochete"))
-                e = new Inimigo(Inimigo.RICOCHETE, pos, enemyVel, enemyScore, dir, img);
-            else if (type.equals("perseguidor"))
-                e = new Inimigo(Inimigo.PERSEGUIDOR, pos, enemyVel, enemyScore, dir, img);
-            else if (type.equals("saltador"))
-                e = new Inimigo(Inimigo.SALTADOR, pos, enemyVel, enemyScore, dir, img);
-            else // por defeito assume que é linear
-                e = new Inimigo(Inimigo.LINEAR, pos, enemyVel, enemyScore, dir, img);
+            InimigoDefault e = switch (type) {
+                case "linear" -> new Linear(pos, enemyVel, enemyScore, dir, img);
+                case "ricochete" -> new Ricochete(pos, enemyVel, enemyScore, dir, img);
+                case "flutuante" -> new Flutuante(pos, enemyVel, enemyScore, dir, img);
+                case "perseguidor" -> new Perseguidor(pos, enemyVel, enemyScore, dir, img);
+                case "sinusoidal" -> new Sinusoidal(pos, enemyVel, enemyScore, dir, img);
+                case "saltador" -> new Saltador(pos, enemyVel, enemyScore, dir, img);
+                case "ziguezague" -> new Ziguezague(pos, enemyVel, enemyScore, dir, img);
+                default -> new Linear(pos, enemyVel, enemyScore, dir, img); // por defeito assume que é linear
+            };
             // adicionar o inimigo ao mundo
             mundo.addEnemy(e);
+            super.update();
         }
     }
 }

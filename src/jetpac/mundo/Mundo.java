@@ -23,7 +23,7 @@ public class Mundo {
 	private Spaceship ship;
 	private ArrayList<Plataforma> platforms = new ArrayList<>();
 	private ArrayList<Laser> lasers = new ArrayList<Laser>();
-	private ArrayList<Inimigo> enemies = new ArrayList<Inimigo>();
+	private ArrayList<InimigoDefault> enemies = new ArrayList<InimigoDefault>();
 
 	// TODO DONE usar apenas uma lista
 	private ArrayList<DraggableElement> elementosPegaveis = new ArrayList<>();
@@ -103,12 +103,11 @@ public class Mundo {
 		for (Laser d : lasers)
 			d.draw(g);
 
-		for (Inimigo e : enemies)
+		for (InimigoDefault e : enemies)
 			e.draw(g);
 
 		// TODO DONE tentar usar apenas um for
-		for (DraggableElement draggable : elementosPegaveis)
-			draggable.draw(g);
+        for (DraggableElement elementosPegavei : elementosPegaveis) elementosPegavei.draw(g);
 
 		ship.draw(g);
 	}
@@ -156,15 +155,18 @@ public class Mundo {
 	private void updateElementos() {
 		ship.update();
 
-		for (Plataforma f : platforms)
-			f.update();
+		for(int i = 0; i < platforms.size(); i++) {
+			platforms.get(i).update();
+		}
 
-		for(Inimigo inimigo : enemies)
-			inimigo.update();
+		for(int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).update();
+		}
 
 		// TODO DONE tentar usar apenas um for
-		for (DraggableElement draggable : elementosPegaveis)
-			draggable.update();
+		for(int i = 0; i < elementosPegaveis.size(); i++) {
+			elementosPegaveis.get(i).update();
+		}
 
 		// retirar os disparos que já não estão ativos
 		for (int i = lasers.size() - 1; i >= 0; i--) {
@@ -180,9 +182,10 @@ public class Mundo {
 
 		// retirar os arrastáveis que já não estão ativos
 		// TODO DONE tentar usar apenas um for
-		for(DraggableElement draggable : elementosPegaveis)
-			if(!draggable.isActive())
-				elementosPegaveis.remove(draggable);
+		for(int i = 0; i < elementosPegaveis.size(); i++) {
+			if(!elementosPegaveis.get(i).isActive())
+				elementosPegaveis.remove(elementosPegaveis.get(i));
+		}
 	}
 
 	private void prepararCenario() {
@@ -417,7 +420,6 @@ public class Mundo {
 	public boolean isOver() {
 		return astronauta.isDead();
 	}
-
 	/**
 	 * o mundo está a acabar por morte
 	 */
@@ -441,7 +443,7 @@ public class Mundo {
 	 * 
 	 * @param e o inimigo a adicionar
 	 */
-	public void addEnemy(Inimigo e) {
+	public void addEnemy(InimigoDefault e) {
 		enemies.add(e);
 		e.setWorld(this);
 	}
@@ -460,7 +462,7 @@ public class Mundo {
 	 * 
 	 * @return os inimigos
 	 */
-	public List<Inimigo> getEnemies() {
+	public List<InimigoDefault> getEnemies() {
 		return Collections.unmodifiableList(enemies);
 	}
 

@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.concurrent.ThreadLocalRandom;
 
-import jetpac.enemy.Inimigo;
+import jetpac.enemy.InimigoDefault;
 import jetpac.mundo.WorldElementDefault;
 
 /**
@@ -75,7 +75,7 @@ public class Laser extends WorldElementDefault {
 			}
 		}
 		// ver se bate nos inimigos
-		for (Inimigo e : getWorld().getEnemies()) {
+		for (InimigoDefault e : getWorld().getEnemies()) {
 			Rectangle r = e.getImagem().getBounds();
 			if (!e.isDying() && r.intersectsLine(laser)) {
 				laser.x2 = laser.x1 <= r.x ? r.x : r.x + r.width;

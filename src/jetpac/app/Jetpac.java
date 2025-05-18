@@ -66,7 +66,7 @@ public class Jetpac extends JFrame {
 	 */
 	private void startGame() {
 		// configuração inicial
-		nivel = 1;
+		nivel = 11;
 		pontuacao = 0;
 		vidas = 5;
 

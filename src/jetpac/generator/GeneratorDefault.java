@@ -23,9 +23,6 @@ public class GeneratorDefault implements Generator {
 
     @Override
     public void update(){
-        if(!podeCriarElemento())
-            return;
-
         nElementos++;
         nextCreationTime = nextCreationTime();
     }
@@ -43,7 +40,7 @@ public class GeneratorDefault implements Generator {
      */
     @Override
     public long nextCreationTime(){
-        return minCreationTime + ReguladorVelocidade.tempoRelativo() + ThreadLocalRandom.current().nextInt(range);
+        return minCreationTime + ReguladorVelocidade.tempoRelativo() + (range == 0 ? 0 :ThreadLocalRandom.current().nextInt(range));
     }
 
     @Override
